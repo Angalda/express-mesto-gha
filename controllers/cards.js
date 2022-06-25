@@ -27,7 +27,18 @@ module.exports.deleteCardId = (req, res) => {
     .catch(err => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
+//поставить лайк карточке
+module.exports.likeCard = (req, res) => {
 
-//GET /cards — возвращает все карточки
-//POST /cards — создаёт карточку
-//DELETE /cards/:cardId — удаляет карточку по идентификатору
+  Card.findByIdAndUpdate(req.params.cardId, {$addToSet: {likes: req.user._id}}, {new: true})
+    .then(card => res.send({ data: card }))
+    .catch(err => res.status(500).send({ message: 'Произошла ошибка' }));
+};
+
+//убрать лайк с карточки
+module.exports.removeLikeCard = (req, res) => {
+
+  Card.findByIdAndUpdate(req.params.cardId, {$pull: {likes: req.user._id}}, {new: true})
+    .then(card => res.send({ data: card }))
+    .catch(err => res.status(500).send({ message: 'Произошла ошибка' }));
+};
