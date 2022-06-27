@@ -12,4 +12,4 @@ router.patch('/me', updateUser);
 
 router.patch('/me/avatar', updateAvatar);
 
-module.exports=router;
+module.exports = router;
