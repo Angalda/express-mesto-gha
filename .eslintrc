@@ -1,26 +1,6 @@
 {
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es2021": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "airbnb-base"
-  ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": "latest"
-  },
-  "plugins": [
-    "react"
-  ],
+  "extends": "airbnb-base",
   "rules": {
-    "enforceInMethodNames": false,
-    "enforceInClassFields": false,
-    "allowFunctionParams": true
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }
 }
