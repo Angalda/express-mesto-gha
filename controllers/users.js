@@ -9,7 +9,8 @@ module.exports.getUsers = (req, res) => {
 
 //возвращает пользователя по _id
 module.exports.getUserId = (req, res) => {
-  User.findById(req.params.id)
+  //User.findById(req.params.id)
+  User.findById(req.params.userId)
 
     .then((user) => {
       if (!user) {
