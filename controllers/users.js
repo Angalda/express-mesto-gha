@@ -12,10 +12,10 @@ module.exports.getUserId = (req, res) => {
   User.findById(req.params.id)
 
     .then((user) => {
-      if (!user) {
+      /*if (!user) {
         res.status(404).send({ message: 'Не найдено' });
-        return;
-      }
+        //return;
+      }*/
       res.status(200).send({ data: user })
     })
     .catch((err) => {
