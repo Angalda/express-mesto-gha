@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 // возвращает всех пользователей
@@ -29,8 +31,15 @@ module.exports.getUserId = (req, res) => {
 
 // создаёт пользователя
 module.exports.postUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
+
     // вернём записанные в базу данные
     .then((user) => res.send({ data: user }))
     // данные не записались, вернём ошибку
@@ -80,5 +89,24 @@ module.exports.updateAvatar = (req, res) => {
         return;
       }
       res.status(500).send({ message: 'Ошибка сервера' });
+    });
+};
+
+// логин
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, { expiresIn: '7d' });
+
+      // вернём токен
+      res.send({ token });
+    })
+    .catch((err) => {
+      // ошибка аутентификации
+      res
+        .status(401)
+        .send({ message: err.message });
     });
 };
