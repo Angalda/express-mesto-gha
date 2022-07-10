@@ -26,7 +26,7 @@ module.exports.validationUpdateAvatar = celebrate({
 
 module.exports.validationLogin = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().required().email({ tlds: { allow: false } }),
     password: Joi.string().required().min(8),
   }),
 });
