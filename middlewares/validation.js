@@ -1,7 +1,12 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 
-const validateUrl = (v) => validator.isURL(v);
+const validateUrl = (v) => {
+  if (!validator.isURL(v)) {
+    throw new Error('Неверный формат ссылки');
+  }
+  return v;
+};
 
 module.exports.validationCreateUser = celebrate({
   body: Joi.object().keys({
@@ -42,7 +47,7 @@ module.exports.validationGetUserId = celebrate({
 module.exports.validationCreateCard = celebrate({
   params: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().custom(validateUrl),
+    link: Joi.string().required(),
   }),
 });
 
