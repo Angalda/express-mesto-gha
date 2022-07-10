@@ -36,7 +36,7 @@ module.exports.getUserId = (req, res, next) => {
 
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Не найдено');
+        throw new ConflictError('Пользователь уже существует');
       } else {
         res.status(200).send({ data: user });
       }
