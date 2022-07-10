@@ -10,7 +10,7 @@ const validateUrl = (v) => {
 
 module.exports.validationCreateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
+    name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().custom(validateUrl),
     email: Joi.string().required().email(),
