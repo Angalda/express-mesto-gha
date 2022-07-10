@@ -54,31 +54,25 @@ module.exports.createUser = (req, res, next) => {
     name, about, avatar, email, password,
   } = req.body;
 
-  User.findOne({ email })
-    .then((data) => {
-      if (data) {
-        throw new BadRequestError('Некорректные данные');
-      } else {
-        bcrypt.hash(password, 10)
-          .then((hash) => User.create({
-            name, about, avatar, email, password: hash,
-          }))
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
 
-          // вернём записанные в базу данные
-          .then((user) => res.send({
-            data: {
-              name: user.name, about: user.about, avatar: user.avatar, email: user.email,
-            },
-          }))
-          // данные не записались, вернём ошибку
-          .catch((err) => {
-            if (err.name === 'ValidationError') {
-              next(new BadRequestError('Некорректные данные'));
-            } else if (err.code === 11000) {
-              next(new ConflictError('Указанный e-mail уже зерегистрирован'));
-            } else { next(err); }
-          });
-      }
+    // вернём записанные в базу данные
+    .then((user) => res.send({
+      data: {
+        name: user.name, about: user.about, avatar: user.avatar, email: user.email,
+      },
+    }))
+
+  // данные не записались, вернём ошибку
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Некорректные данные'));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Указанный e-mail уже зерегистрирован'));
+      } else { next(err); }
     });
 };
 
