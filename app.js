@@ -8,10 +8,7 @@ const app = express();
 
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const {
-  validationCreateUser,
-  /* validationLogin, */
-} = require('./middlewares/validation');
+const { validationCreateUser, validationLogin } = require('./middlewares/validation');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
-app.post('/signin', /* validationLogin, */ login);
+app.post('/signin', validationLogin, login);
 app.post('/signup', validationCreateUser, createUser);
 
 app.use(auth);
