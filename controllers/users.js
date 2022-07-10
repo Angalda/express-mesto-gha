@@ -175,12 +175,12 @@ module.exports.login = (req, res, next) => {
   return User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        next(new UnauthorizedError('Ошибка авторизации'));
+        throw new UnauthorizedError('Ошибка авторизации');
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            next(new UnauthorizedError('Ошибка авторизации'));
+            throw new UnauthorizedError('Ошибка авторизации');
           }
           return user;
         });
