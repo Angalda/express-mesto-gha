@@ -1,10 +1,13 @@
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
+
+const validateUrl = (v) => validator.isURL(v);
 
 module.exports.validationCreateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string(),
+    avatar: Joi.string().custom(validateUrl),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
@@ -12,7 +15,7 @@ module.exports.validationCreateUser = celebrate({
 
 module.exports.validationUpdateAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required(),
+    avatar: Joi.string().required().custom(validateUrl),
   }),
 });
 
@@ -39,7 +42,7 @@ module.exports.validationGetUserId = celebrate({
 module.exports.validationCreateCard = celebrate({
   params: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required(),
+    link: Joi.string().required().custom(validateUrl),
   }),
 });
 
