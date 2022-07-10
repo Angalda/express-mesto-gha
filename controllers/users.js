@@ -162,9 +162,9 @@ module.exports.login = (req, res, next) => {
       // вернём токен
       res.send({ token });
     })
-    .catch(
+    .catch(() => {
       // ошибка аутентификации
-      next(new UnauthorizedError('Ошибка авторизации')),
-    )
+      throw new UnauthorizedError('Ошибка авторизации');
+    })
     .catch(next);
 };
