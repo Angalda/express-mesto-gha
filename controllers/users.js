@@ -165,5 +165,6 @@ module.exports.login = (req, res, next) => {
     .catch(
       // ошибка аутентификации
       next(new UnauthorizedError('Ошибка авторизации')),
-    );
+    )
+    .catch(next);
 };
