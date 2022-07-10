@@ -150,7 +150,7 @@ module.exports.updateAvatar = (req, res, next) => {
       next(err);
     });
 };
-
+/*
 // логин
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -165,6 +165,29 @@ module.exports.login = (req, res, next) => {
     .catch(() => {
       // ошибка аутентификации
       throw new UnauthorizedError('Ошибка авторизации');
+    })
+    .catch(next);
+}; */
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        next(new UnauthorizedError('Ошибка авторизации'));
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            next(new UnauthorizedError('Ошибка авторизации'));
+          }
+          return user;
+        });
+    })
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      res.send({ token });
     })
     .catch(next);
 };
