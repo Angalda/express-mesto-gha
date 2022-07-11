@@ -9,11 +9,16 @@ const ConflictError = require('../errors/ConflictError');
 // возвращает пользователя
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => {
+    /* .then((user) => {
       if (!user) {
         throw new NotFoundError('Не найдено');
-      }
-      res.status(200).send({ data: user });
+      } */
+    .then((user) => {
+      res.status(200).send({
+        data: {
+          name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id,
+        },
+      });
     })
     .catch((err) => {
       if (err.name === 'CastError') {

@@ -11,8 +11,8 @@ const {
 } = require('../middlewares/validation');
 
 router.get('/', getUsers);
-router.get('/:userId', validationGetUserId, getUserId);
 router.get('/me', getUser);
+router.get('/:userId', validationGetUserId, getUserId);
 
 // router.post('/', postUser);
 
