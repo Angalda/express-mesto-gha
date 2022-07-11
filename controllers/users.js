@@ -12,9 +12,8 @@ module.exports.getUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Не найдено');
-      } else {
-        res.status(200).send({ data: user });
       }
+      res.status(200).send({ data: user });
     })
     /* .catch((err) => {
       if (err.name === 'CastError') {
