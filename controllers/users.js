@@ -9,10 +9,6 @@ const ConflictError = require('../errors/ConflictError');
 // возвращает пользователя
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
-    /* .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Не найдено');
-      } */
     .then((user) => {
       res.status(200).send({
         data: {
