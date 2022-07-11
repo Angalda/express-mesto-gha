@@ -12,24 +12,14 @@ module.exports.getUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Не найдено');
-      } else {
-        res.send({ data: user });
-      }
-    })
-
-  /* User.findById(req.user._id)
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Не найдено');
       }
       res.status(200).send({ data: user });
-    }) */
-    /* .catch((err) => {
+    })
+    .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Некорректные данные'));
       } else { next(err); }
-    }); */
-    .catch(next);
+    });
 };
 
 // возвращает всех пользователей
@@ -45,7 +35,7 @@ module.exports.getUserId = (req, res, next) => {
 
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь уже существует');
+        throw new NotFoundError('Пользователь не найден');
       } else {
         res.status(200).send({ data: user });
       }
