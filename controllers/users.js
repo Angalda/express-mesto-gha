@@ -10,7 +10,7 @@ const ConflictError = require('../errors/ConflictError');
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
-      res.status(200).send({
+      res.send({
         data: {
           name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user._id,
         },
